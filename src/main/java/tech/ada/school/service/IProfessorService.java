@@ -6,12 +6,14 @@ import tech.ada.school.domain.dto.v1.ProfessorDto;
 
 public interface IProfessorService {
 
-    int criarProfessor(String nome);
+    int criarProfessor(ProfessorDto pedido);
 
     List<ProfessorDto> listarProfessores();
 
     ProfessorDto buscarProfessor(int id);
 
-    void atualizarProfessor(int id, String nome);
+    void atualizarProfessor(int id, ProfessorDto pedido);
+
+    void removerProfessor(int id);
 
 }

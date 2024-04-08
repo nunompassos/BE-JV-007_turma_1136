@@ -1,13 +1,11 @@
 package tech.ada.school.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import tech.ada.school.domain.dto.v1.ProfessorDto;
 import tech.ada.school.service.IProfessorService;
 
@@ -29,9 +27,9 @@ public class ProfessorController {
 
     @PostMapping
     public int criarProfessor(
-        @RequestBody ProfessorDto pedido
+        @RequestBody @Valid ProfessorDto pedido
     ) {
-        return servico.criarProfessor(pedido.getNome());
+        return servico.criarProfessor(pedido);
     }
 
     @PutMapping("/{id}")
@@ -39,14 +37,21 @@ public class ProfessorController {
         @PathVariable("id") int id,
         @RequestBody ProfessorDto pedido
     ) {
-        return;
+        servico.atualizarProfessor(id, pedido);
     }
 
     @GetMapping("/{id}")
     public ProfessorDto buscarProfessor(
         @PathVariable("id") int id
     ) {
-        return new ProfessorDto();
+        return servico.buscarProfessor(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void removerProfessor(
+        @PathVariable("id") int id
+    ) {
+        servico.removerProfessor(id);
     }
 
 }

@@ -2,6 +2,7 @@ package tech.ada.school.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,9 @@ public class ProfessorService implements IProfessorService {
     private final List<ProfessorDto> professores = new ArrayList<>();
     private int id = 1;
 
-
     @Override
-    public int criarProfessor(String nome) {
-        professores.add(new ProfessorDto(id, nome));
+    public int criarProfessor(ProfessorDto novoProfessor) {
+        professores.add(new ProfessorDto(id, novoProfessor.getNome(), novoProfessor.getCpf(), novoProfessor.getEmail()));
         return id++;
     }
 
@@ -27,11 +27,19 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public ProfessorDto buscarProfessor(int id) {
-        return null;
+        return professores.stream().filter(it -> it.getId()==id).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public void atualizarProfessor(int id, String nome) {
+    public void atualizarProfessor(int id, ProfessorDto pedido) {
+        final ProfessorDto professor = buscarProfessor(id);
+        professores.remove(professor);
+        professores.add(new ProfessorDto(professor.getId(), pedido.getNome(), pedido.getCpf(), pedido.getEmail()));
+    }
 
+    @Override
+    public void removerProfessor(int id) {
+        final ProfessorDto professor = buscarProfessor(id);
+        professores.remove(professor);
     }
 }
