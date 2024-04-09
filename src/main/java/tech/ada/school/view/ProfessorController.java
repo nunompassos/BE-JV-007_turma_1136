@@ -3,9 +3,12 @@ package tech.ada.school.view;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import tech.ada.school.domain.dto.exception.NotFoundException;
 import tech.ada.school.domain.dto.v1.ProfessorDto;
 import tech.ada.school.service.IProfessorService;
 
@@ -21,37 +24,43 @@ public class ProfessorController {
     }
 
     @GetMapping
-    public List<ProfessorDto> lerProfessores() {
-        return servico.listarProfessores();
+    public ResponseEntity<List<ProfessorDto>> lerProfessores() {
+        return ResponseEntity.ok(servico.listarProfessores());
     }
 
     @PostMapping
-    public int criarProfessor(
+    public ResponseEntity<ProfessorDto> criarProfessor(
         @RequestBody @Valid ProfessorDto pedido
     ) {
-        return servico.criarProfessor(pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(servico.criarProfessor(pedido));
     }
 
     @PutMapping("/{id}")
-    public void atualizarProfessor(
+    public ResponseEntity<ProfessorDto> atualizarProfessor(
         @PathVariable("id") int id,
         @RequestBody ProfessorDto pedido
     ) {
-        servico.atualizarProfessor(id, pedido);
+        final ProfessorDto p = servico.atualizarProfessor(id, pedido);
+
+        if (p == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(p);
     }
 
     @GetMapping("/{id}")
-    public ProfessorDto buscarProfessor(
+    public ResponseEntity<ProfessorDto> buscarProfessor(
         @PathVariable("id") int id
-    ) {
-        return servico.buscarProfessor(id);
+    ) throws NotFoundException {
+        return ResponseEntity.ok(servico.buscarProfessor(id));
     }
 
     @DeleteMapping("/{id}")
-    public void removerProfessor(
+    public ResponseEntity<Void> removerProfessor(
         @PathVariable("id") int id
-    ) {
+    ) throws NotFoundException {
         servico.removerProfessor(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
