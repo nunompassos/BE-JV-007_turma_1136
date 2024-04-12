@@ -58,4 +58,9 @@ public class ProfessorService implements IProfessorService {
         final ProfessorDto professor = buscarProfessor(id);
         professores.remove(professor);
     }
+
+    @Override
+    public ProfessorDto buscarPorCpf(String cpf) throws NotFoundException {
+        return null;
+    }
 }
