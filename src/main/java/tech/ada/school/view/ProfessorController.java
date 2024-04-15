@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import tech.ada.school.domain.dto.exception.NotFoundException;
@@ -57,6 +59,7 @@ public class ProfessorController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirements(@SecurityRequirement(name = "JWT"))
     public ResponseEntity<Void> removerProfessor(
         @PathVariable("id") int id
     ) throws NotFoundException {
