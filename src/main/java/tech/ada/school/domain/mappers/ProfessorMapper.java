@@ -14,12 +14,13 @@ public class ProfessorMapper {
             .build();
     }
 
-    public static ProfessorDto toDto(Professor entity) {
+    public static ProfessorDto toDto(Professor entity, String activity) {
         return new ProfessorDto(
             entity.getId(),
             entity.getNome(),
             entity.getCpf(),
-            entity.getEMail()
+            entity.getEMail(),
+            activity
         );
     }
 

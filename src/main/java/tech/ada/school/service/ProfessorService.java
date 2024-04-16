@@ -21,7 +21,8 @@ public class ProfessorService implements IProfessorService {
             id++,
             novoProfessor.getNome(),
             novoProfessor.getCpf(),
-            novoProfessor.getEmail()
+            novoProfessor.getEmail(),
+            null
         );
         professores.add(p);
         return p;
@@ -48,7 +49,7 @@ public class ProfessorService implements IProfessorService {
             return null;
         }
         professores.remove(professor);
-        final ProfessorDto p = new ProfessorDto(professor.getId(), pedido.getNome(), pedido.getCpf(), pedido.getEmail());
+        final ProfessorDto p = new ProfessorDto(professor.getId(), pedido.getNome(), pedido.getCpf(), pedido.getEmail(), null);
         professores.add(p);
         return p;
     }
